@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Pintar Ceria - IPA, IPS & Seni Budaya</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FEF08A 0%, #F472B6 50%, #60A5FA 100%);
+            min-height: 100vh;
+        }
+        .bouncing {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col items-center justify-center p-4 sm:p-6">
+
+    <header class="text-center mb-6 mt-2">
+        <div class="inline-block bg-yellow-300 text-pink-600 font-ext500 text-xs sm:text-sm px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md mb-2 font-bold border-2 border-white">
+            ✨ Spesial SMP & SMA ✨
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white drop-shadow-lg">
+            Kuis Pintar Ceria 🧠🎨
+        </h1>
+        <p class="text-white font-medium text-sm sm:text-base mt-2 drop-shadow">
+            Uji wawasan IPA, IPS, & Seni Budayamu dengan cara paling seru dan lucu!
+        </p>
+    </header>
+
+    <main class="w-full max-w-xl bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-6 sm:p-8 border-4 border-white">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="text-center py-6">
+            <div class="text-6xl sm:text-7xl mb-4 bouncing">🎒</div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-pink-500 mb-3">Siap Berpetualang Ilmu?</h2>
+            <p class="text-slate-600 mb-6 text-sm sm:text-base">
+                Jawab pertanyaan seru seputar Sains, Sosial, dan Kesenian. Ada 12 pertanyaan kocak nan mendidik menantimu!
+            </p>
+            <button onclick="startQuiz()" class="w-full bg-gradient-to-r from-pink-500 to-blue-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-90 transition transform hover:scale-105 active:scale-95 text-lg cursor-pointer">
+                🚀 Mulai Kuis Sekarang!
+            </button>
+        </div>
+
+        <!-- Quiz Screen (Hidden by default) -->
+        <div id="quiz-screen" class="hidden">
+            <!-- Progress & Category Header -->
+            <div class="flex justify-between items-center mb-4 text-sm font-semibold">
+                <span id="category-badge" class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full border border-yellow-300">IPA</span>
+                <span id="question-counter" class="text-slate-500">Soal 1 dari 12</span>
+            </div>
+
+            <!-- Score bar -->
+            <div class="w-full bg-slate-100 rounded-full h-2.5 mb-6 overflow-hidden">
+                <div id="progress-bar" class="bg-pink-500 h-2.5 rounded-full transition-all duration-300" style="width: 8.33%"></div>
+            </div>
+
+            <!-- Question Box -->
+            <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-4 sm:p-5 mb-6">
+                <h3 id="question-text" class="text-lg sm:text-xl font-bold text-slate-800 leading-snug">
+                    Pertanyaan akan muncul di sini...
+                </h3>
+            </div>
+
+            <!-- Options Container -->
+            <div id="options-container" class="space-y-3 mb-6">
+                <!-- Options populated dynamically -->
+            </div>
+
+            <!-- Feedback / Fun Fact Box (Hidden initially) -->
+            <div id="feedback-box" class="hidden p-4 rounded-2xl mb-6 text-sm sm:text-base font-medium">
+                <!-- Feedback text -->
+            </div>
+
+            <!-- Next Button -->
+            <button id="next-btn" onclick="nextQuestion()" class="hidden w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md transition transform hover:scale-105 text-lg cursor-pointer">
+                Lanjut ke Soal Berikutnya ➡️
+            </button>
+        </div>
+
+        <!-- Result Screen (Hidden by default) -->
+        <div id="result-screen" class="hidden text-center py-6">
+            <div class="text-6xl sm:text-7xl mb-4 bouncing" id="result-emoji">🎉</div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-pink-500 mb-2">Kuis Selesai!</h2>
+            <p id="result-message" class="text-slate-600 text-base mb-6">Kamu hebat banget!</p>
+            
+            <div class="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6 mb-6">
+                <p class="text-sm text-yellow-800 font-semibold uppercase tracking-wider">Skor Akhir Kamu</p>
+                <p id="final-score" class="text-4xl sm:text-5xl font-extrabold text-pink-600 mt-2">0 / 12</p>
+            </div>
+
+            <button onclick="restartQuiz()" class="w-full bg-gradient-to-r from-yellow-400 to-pink-500 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg hover:opacity-90 transition transform hover:scale-105 text-lg cursor-pointer">
+                🔄 Main Lagi & Pecahkan Rekor!
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="mt-6 text-white text-xs sm:text-sm font-medium drop-shadow text-center">
+        Dibuat khusus dengan 💛 warna-warni ceria untuk pelajar Indonesia!
+    </footer>
+
+    <script>
+        // Database pertanyaan IPA, IPS, dan Seni Budaya untuk SMP & SMA
+        const quizData = [
+            // IPA
+            {
+                category: "Sains & IPA 🧪",
+                catClass: "bg-yellow-100 text-yellow-800 border-yellow-300",
+                question: "Kenapa kalau kita lagi ujian mendadak jantung berdegup kencang mirip drumer band rock? Hormon apa yang lagi kerja lembur bagai kuda?",
+                options: [
+                    "A. Hormon Adrenalin (Bukan gebetan yang lewat ya!)",
+                    "B. Hormon Insulin (Biar manis pas senyum)",
+                    "C. Hormon Melatonin (Biar pengen tidur nyenyak)",
+                    "D. Hormon Estrogen (Biar modis)"
+                ],
+                correct: 0,
+                explanation: "Betul! Adrenalin disekresikan saat tubuh stres atau kaget menghadapi situasi genting kayak soal ujian mendadak."
+            },
+            {
+                category: "Sains & IPA 🧪",
+                catClass: "bg-yellow-100 text-yellow-800 border-yellow-300",
+                question: "Planet apa di tata surya kita yang paling pemalas karena rotasinya paling lambat, mutarnya butuh waktu lebih lama dari tahunnya sendiri?",
+                options: [
+                    "A. Merkurius yang mager",
+                    "B. Venus (Mutarnya kebalik dan super lambat!)",
+                    "C. Mars si planet merah",
+                    "D. Jupiter si raksasa gas"
+                ],
+                correct: 1,
+                explanation: "Tepat sekali! Venus berotasi sangat lambat, satu hari di Venus lebih panjang daripada satu tahun di Venus."
+            },
+            {
+                category: "Sains & IPA 🧪",
+                catClass: "bg-yellow-100 text-yellow-800 border-yellow-300",
+                question: "Organel sel mana yang dijuluki sebagai 'Pembangkit Tenaga Listrik' alias PLN-nya sel hidup?",
+                options: [
+                    "A. Nukleus (Pak RT-nya sel)",
+                    "B. Ribosom (Pabrik jajanan)",
+                    "C. Mitokondria (Penghasil ATP energi sel)",
+                    "D. Vakuola (Gudang penyimpanan)"
+                ],
+                correct: 2,
+                explanation: "Mantap! Mitokondria menghasilkan energi (ATP) melalui respirasi seluler."
+            },
+            {
+                category: "Sains & IPA 🧪",
+                catClass: "bg-yellow-100 text-yellow-800 border-yellow-300",
+                question: "Hewan apa yang kalau dipotong bagian tubuh tertentu bisa tumbuh lagi atau regenerasi, mirip status mantan yang susah dilupain?",
+                options: [
+                    "A. Cacing Planaria",
+                    "B. Kucing Anggora",
+                    "C. Ikan Lele dumbo",
+                    "D. Burung Merpati"
+                ],
+                correct: 0,
+                explanation: "Benar! Cacing Planaria terkenal punya kemampuan regenerasi super tinggi berkat sel neoblast."
+            },
+
+            // IPS
+            {
+                category: "Sosial & IPS 🌍",
+                catClass: "bg-pink-100 text-pink-800 border-pink-300",
+                question: "Perjanjian bongkar muat laut internasional yang sering dibahas di pelajaran geografi ekonomi disebut apa?",
+                options: [
+                    "A. Zona Ekonomi Eksklusif (ZEE)",
+                    "B. Landas Kontinen",
+                    "C. Hukum Laut Internasional (UNCLOS)",
+                    "D. Perjanjian Linggarjati"
+                ],
+                correct: 2,
+                explanation: "Hebat! UNCLOS (United Nations Convention on the Law of the Sea) adalah konvensi hukum laut PBB."
+            },
+            {
+                category: "Sosial & IPS 🌍",
+                catClass: "bg-pink-100 text-pink-800 border-pink-300",
+                question: "Apa julukan bagi zaman batu tua di mana manusia purba kerjanya masih berpindah-pindah tempat (nomaden) cari makanan?",
+                options: [
+                    "A. Paleolitikum (Batu Tua)",
+                    "B. Neolitikum (Batu Muda)",
+                    "C. Megalitikum (Batu Besar)",
+                    "D. Zaman Millennial"
+                ],
+                correct: 0,
+                explanation: "Tepat! Paleolitikum adalah zaman batu tua dengan corak kehidupan food gathering."
+            },
+            {
+                category: "Sosial & IPS 🌍",
+                catClass: "bg-pink-100 text-pink-800 border-pink-300",
+                question: "Ketika harga barang naik terus secara umum dan terus-menerus, dompet anak sekolah jadi korban. Fenomena ekonomi ini disebut...",
+                options: [
+                    "A. Deflasi (Harga turun)",
+                    "B. Inflasi (Harga naik / penurunan nilai uang)",
+                    "C. Devaluasi mata uang",
+                    "D. Apresiasi dompet tipis"
+                ],
+                correct: 1,
+                explanation: "Betul! Inflasi bikin daya beli menurun karena harga barang melonjak."
+            },
+            {
+                category: "Sosial & IPS 🌍",
+                catClass: "bg-pink-100 text-pink-800 border-pink-300",
+                question: "Lembaga keuangan internasional yang bertindak sebagai 'bank sentral dari bank sentral dunia' untuk urusan pembangunan ekonomi adalah...",
+                options: [
+                    "A. Bank Dunia (World Bank)",
+                    "B. UEFA Champions League",
+                    "C. NASA",
+                    "D. WHO"
+                ],
+                correct: 0,
+                explanation: "Betul banget! World Bank memberikan pinjaman untuk pembangunan negara-negara anggota."
+            },
+
+            // Seni Budaya
+            {
+                category: "Seni Budaya 🎨",
+                catClass: "bg-blue-100 text-blue-800 border-blue-300",
+                question: "Alat musik tradisional asal Jawa Barat yang terbuat dari bambu dan dimainkan dengan cara digoyangkan adalah...",
+                options: [
+                    "A. Sasando",
+                    "B. Angklung (Udah diakui UNESCO lho!)",
+                    "C. Kolintang",
+                    "D. Gamelan"
+                ],
+                correct: 1,
+                explanation: "Pintar! Angklung adalah warisan budaya tak benda UNESCO asal Jawa Barat."
+            },
+            {
+                category: "Seni Budaya 🎨",
+                catClass: "bg-blue-100 text-blue-800 border-blue-300",
+                question: "Dalam seni rupa dua dimensi, warna primer atau warna dasar yang tidak bisa dicampur dari warna lain adalah...",
+                options: [
+                    "A. Merah, Kuning, Biru",
+                    "B. Hitam, Putih, Abu-abu",
+                    "C. Ungu, Hijau, Jingga",
+                    "D. Pink, Toska, Magenta"
+                ],
+                correct: 0,
+                explanation: "Tepat! Merah, Kuning, dan Biru adalah tiga warna primer dalam teori seni rupa tradisional."
+            },
+            {
+                category: "Seni Budaya 🎨",
+                catClass: "bg-blue-100 text-blue-800 border-blue-300",
+                question: "Tari tradisional dari Aceh yang terkenal sangat dinamis dengan gerakan tangan kompak penari menepuk dada dan paha disebut...",
+                options: [
+                    "A. Tari Saman",
+                    "B. Tari Pendet",
+                    "C. Tari Piring",
+                    "D. Tari Kecak"
+                ],
+                correct: 0,
+                explanation: "Hebat! Tari Saman terkenal dengan kecepatan, ketepatan, dan kekompakan ribuan penarinya."
+            },
+            {
+                category: "Seni Budaya 🎨",
+                catClass: "bg-blue-100 text-blue-800 border-blue-300",
+                question: "Teknik melukis dinding dengan menggunakan cat pada tembok yang masih basah sehingga cat menyatu dengan dinding disebut teknik...",
+                options: [
+                    "A. Teknik Plakat",
+                    "B. Teknik Aquarel (Transparan)",
+                    "C. Teknik Al Secco",
+                    "D. Teknik Fresco"
+                ],
+                correct: 3,
+                explanation: "Mantap! Fresco adalah teknik lukisan dinding klasik terkenal di era Renaisans (misal karya Michelangelo)."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const categoryBadge = document.getElementById('category-badge');
+        const questionCounter = document.getElementById('question-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackBox = document.getElementById('feedback-box');
+        const nextBtn = document.getElementById('next-btn');
+
+        function startQuiz() {
+            welcomeScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answered = false;
+            feedbackBox.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+
+            const q = quizData[currentQuestionIndex];
+            
+            // Update metadata
+            categoryBadge.textContent = q.category;
+            categoryBadge.className = `text-xs px-3 py-1 rounded-full border font-semibold ${q.catClass}`;
+            questionCounter.textContent = `Soal ${currentQuestionIndex + 1} dari ${quizData.length}`;
+            
+            // Progress bar
+            const progressPercent = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+
+            // Question text
+            questionText.textContent = q.question;
+
+            // Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-4 rounded-2xl border-2 border-slate-200 bg-white hover:bg-slate-50 font-medium text-slate-700 transition flex items-center justify-between shadow-sm cursor-pointer`;
+                btn.innerHTML = `<span>${opt}</span>`;
+                btn.onclick = () => selectOption(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectOption(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+
+            const q = quizData[currentQuestionIndex];
+            const allButtons = optionsContainer.getElementsByTagName('button');
+
+            if (selectedIndex === q.correct) {
+                selectedBtn.className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-400 bg-emerald-50 font-semibold text-emerald-800 flex items-center justify-between shadow-sm";
+                score++;
+                feedbackBox.className = "p-4 rounded-2xl mb-6 text-sm sm:text-base font-medium bg-emerald-100 text-emerald-800 border border-emerald-300";
+                feedbackBox.innerHTML = `✨ <strong>Benar Sekali!</strong> ${q.explanation}`;
+            } else {
+                selectedBtn.className = "w-full text-left p-4 rounded-2xl border-2 border-rose-400 bg-rose-50 font-semibold text-rose-800 flex items-center justify-between shadow-sm";
+                // Show correct one
+                allButtons[q.correct].className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-400 bg-emerald-50 font-semibold text-emerald-800 flex items-center justify-between shadow-sm";
+                
+                feedbackBox.className = "p-4 rounded-2xl mb-6 text-sm sm:text-base font-medium bg-rose-100 text-rose-800 border border-rose-300";
+                feedbackBox.innerHTML = `❌ <strong>Kurang Tepat!</strong> Jawaban yang benar adalah opsi ${String.fromCharCode(65 + q.correct)}. ${q.explanation}`;
+            }
+
+            feedbackBox.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+
+            // Disable all buttons
+            for (let btn of allButtons) {
+                btn.style.cursor = 'default';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            document.getElementById('final-score').textContent = `${score} / ${quizData.length}`;
+            
+            const resultEmoji = document.getElementById('result-emoji');
+            const resultMessage = document.getElementById('result-message');
+
+            if (score === quizData.length) {
+                resultEmoji.textContent = "🏆";
+                resultMessage.textContent = "Wah, keren banget! Nilai kamu sempurna! Calon ilmuwan & seniman masa depan nih!";
+            } else if (score >= 8) {
+                resultEmoji.textContent = "🌟";
+                resultMessage.textContent = "Hebat! Wawasan IPA, IPS, dan Seni Budayamu sudah sangat luas dan keren!";
+            } else if (score >= 5) {
+                resultEmoji.textContent = "👍";
+                resultMessage.textContent = "Lumayan bagus! Tingkatkan lagi belajarnya biar makin jago ya.";
+            } else {
+                resultEmoji.textContent = "💪";
+                resultMessage.textContent = "Jangan menyerah! Yuk coba lagi supaya makin paham materi sekolahnya.";
+            }
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
